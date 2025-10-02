@@ -8,10 +8,7 @@ namespace final
     class deep_copy_ptr : public std::unique_ptr<T, D>
     {
     public:
-        explicit deep_copy_ptr(T *val = nullptr)
-            : std::unique_ptr<T, D>{val}
-        {
-        }
+        using std::unique_ptr<T, D>::unique_ptr;
 
         deep_copy_ptr(const deep_copy_ptr &other)
             : std::unique_ptr<T, D>{other.create_deep_copy_of_ptr(), other.get_deleter()}
@@ -27,6 +24,8 @@ namespace final
 
         deep_copy_ptr(deep_copy_ptr &&other) = default;
         deep_copy_ptr &operator=(deep_copy_ptr &&other) = default;
+
+        ~deep_copy_ptr() = default;
 
     private:
         [[nodiscard]] T *create_deep_copy_of_ptr() const
